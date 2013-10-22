@@ -1,0 +1,19 @@
+[ui]
+editor = vim
+username = Kyle Isom <kyle@tyrfingr.is>
+
+[diff]
+git=1
+
+[extensions]
+bookmarks=
+color=
+eol=
+hggit=
+hgext.convert=
+graphlog=
+pager=
+progress=
+purge =
+#hggit = 
+

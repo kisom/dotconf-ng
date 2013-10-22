@@ -1,0 +1,9 @@
+UXTerm*background: black
+UXTerm*foreground: green
+UXTerm*loginShell: true
+! UXTerm*faceName:           anonymous-pro:regular:pixelsize=12
+UXTerm*faceName:           terminus:regular:pixelsize=14
+XTerm*background: black
+XTerm*foreground: green
+XTerm*loginShell: true
+XTerm*faceName:           inconsolata:regular:pixelsize=12

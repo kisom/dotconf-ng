@@ -1,0 +1,4 @@
+dotconf2
+
+I've been reworking some of my configuration files, and this is the
+result. Namely, I've switched to ksh(1) as my primary shell.
