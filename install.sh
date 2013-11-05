@@ -1,5 +1,5 @@
 #!/bin/sh
-files="$(ls -1 | xargs)"
+files="$(ls -1 | grep -v README | xargs)"
 
 for conf in $files
 do
