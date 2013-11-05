@@ -14,7 +14,7 @@ fi
 export PATH HOME TERM HISTFILE
 
 GOPATH=${HOME}/git/go export GOPATH
-PS1="<\h:\w>\n(\$?) $ " export PS1
+PS1="\w\n(\$?) <\h> $ " export PS1
 
 if [ -d ${HOME}/.profile.d ]; then
 	for conf in $(ls ${HOME}/.profile.d)
