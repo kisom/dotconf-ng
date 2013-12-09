@@ -170,7 +170,7 @@ vcshelp () {
     echo "\tvcdiff"
 }
 
-git-dump () {
+git_dump () {
     if [ -z "$1" ]; then
         return
     fi
@@ -186,7 +186,7 @@ git-dump () {
     echo "[+] created $1 at $filesize."
 }
 
-git-restore () {
+git_restore () {
     if [ -z "$1" ]; then
         return
     fi
