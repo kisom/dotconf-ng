@@ -1,0 +1,76 @@
+	; -*-lisp-*-
+
+	;; Load swank.
+	;; *prefix-key* ; swank will kick this off
+	(ql:quickload :swank)
+	(let ((server-running nil))
+	  (defcommand swank () ()
+	    "Toggle the swank server on/off"
+	    (if server-running
+		(progn
+		  (swank:stop-server 4005)
+		  (echo-string
+		   (current-screen)
+		   "Stopping swank.")
+		  (setf server-running nil))
+		(progn
+		  (swank:create-server :port 4005
+				       :style swank:*communication-style*
+				       :dont-close t)
+		  (echo-string
+		   (current-screen)
+		   "Starting swank. M-x slime-connect RET RET, then (in-package stumpwm).")
+		  (setf server-running t)))))
+
+	(define-key *root-map* (kbd "C-s") "swank")
+
+	;; make frames 1-numbered (i.e. for getting with ALT-FN)
+	(setf *frame-number-map* "1234567890")
+	(setf *window-number-map* "1234567890") ; This doesn't actually do anything
+
+	(run-commands
+	  "gnewbg Browse" ;; F2
+	  "gnewbg IRC"    ;; F3
+	  "gnewbg Pidgin" ;; F4
+	  "gnewbg G5"     ;; F5
+	  "gnewbg G6"     ;; F6
+	  "gnewbg G7"     ;; F7
+	  "gnewbg G8"     ;; F8
+	  "gnewbg G9"     ;; F9
+	  "gnewbg G10"    ;; F10
+	  "gnewbg G11")   ;; F11
+
+	;; Fluxbox-style Alt-F# virtual desktop (group in StumpWM-speak) switching. Modified from:
+	;; http://hcl-club.lu/svn/development/lisp/.stumpwmrc
+	(dotimes (i 13)
+	  (unless (eq i 0) ; F0 is non-existant and will error.
+	    (define-key *top-map* (kbd (format nil "M-F~a" i)) (format nil "gselect ~a" i))))
+
+	(defcommand acpi-status () ()
+	  (stumpwm:echo-string (current-screen)
+	   (with-output-to-string (stream)
+	     (sb-ext:run-program
+	      "/usr/bin/acpitool"
+	      nil
+	   :output stream))))
+
+	(define-key stumpwm:*root-map* (kbd "B") "run-shell-command conkeror")
+	(define-key *root-map* (kbd "b") "acpi-status")
+	(define-key *root-map* (kbd "RET") "exec urxvtc")
+	(define-key *root-map* (kbd "d") "exec dmenu_run")
+	(define-key *root-map* (kbd "e") "exec emacsclient -c -a \"\"")
+
+	;; run a battery status bar
+	(run-shell-command "nohup xbattbar -ac left &")
+
+	;; set FFM
+	(setf *mouse-focus-policy* :sloppy)
+
+	;; show input bar in centre of screen
+	(setf *input-window-gravity* :center)
+
+	;; add ssh keys
+	(run-shell-command "emacs --daemon")
+	(run-shell-command "ssh-add")
+	(run-shell-command "urxvtd -f")
+	;LISP=sbcl

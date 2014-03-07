@@ -7,3 +7,8 @@ XTerm*background: black
 XTerm*foreground: green
 XTerm*loginShell: true
 XTerm*faceName:           inconsolata:regular:pixelsize=12
+URxvt*background: black
+URxvt*foreground: green
+URxvt*loginShell: true
+! UXTerm*faceName:           anonymous-pro:regular:pixelsize=12
+URxvt*faceName:           terminus:regular:pixelsize=14

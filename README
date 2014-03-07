@@ -1,4 +1,14 @@
 dotconf2
 
+2014/03/06
+
+The configuration is being reworked to reflect the new setup of things:
+
+* emacs as an editor
+* stumpwm as a window manager
+* zsh as the terminal emulator
+
+---
+
 I've been reworking some of my configuration files, and this is the
 result. Namely, I've switched to ksh(1) as my primary shell.
