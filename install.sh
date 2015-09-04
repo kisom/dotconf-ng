@@ -32,10 +32,11 @@ newerp () {
 	return "0"
 }
 
-add_to_filter README
+add_to_filter LICENSE
 add_to_filter PACKAGES
-add_to_filter personal/
+add_to_filter README
 add_to_filter install.sh
+add_to_filter personal/
 
 for conf in $(ls -p1 | xargs)
 do
