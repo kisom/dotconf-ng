@@ -196,5 +196,4 @@ git_restore () {
     git pull bundle $branch
 }
 
-
-# suck it trebek
+alias lsb='git branch -v'

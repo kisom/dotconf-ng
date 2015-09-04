@@ -1,3 +1,9 @@
 [user]
 	name = Kyle
 	email = kyle@tyrfingr.is
+[push]
+        default = simple
+[core]
+        excludesfile = /home/kyle/.gitignore_global
+        editor = mg
+

@@ -1,5 +1,5 @@
 [ui]
-editor = vim
+editor = mg
 username = Kyle Isom <kyle@tyrfingr.is>
 
 [diff]
@@ -15,5 +15,3 @@ graphlog=
 pager=
 progress=
 purge =
-#hggit = 
-

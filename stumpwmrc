@@ -1,76 +1,182 @@
-	; -*-lisp-*-
+;; -*-lisp-*-
 
-	;; Load swank.
-	;; *prefix-key* ; swank will kick this off
-	(ql:quickload :swank)
-	(let ((server-running nil))
-	  (defcommand swank () ()
-	    "Toggle the swank server on/off"
-	    (if server-running
-		(progn
-		  (swank:stop-server 4005)
-		  (echo-string
-		   (current-screen)
-		   "Stopping swank.")
-		  (setf server-running nil))
-		(progn
-		  (swank:create-server :port 4005
-				       :style swank:*communication-style*
-				       :dont-close t)
-		  (echo-string
-		   (current-screen)
-		   "Starting swank. M-x slime-connect RET RET, then (in-package stumpwm).")
-		  (setf server-running t)))))
+;; Load swank.
+;; *prefix-key* ; swank will kick this off
+(ql:quickload :swank)
+(ql:quickload :manifest)
 
-	(define-key *root-map* (kbd "C-s") "swank")
+(defvar *manifest-url*
+  (manifest:start))
 
-	;; make frames 1-numbered (i.e. for getting with ALT-FN)
-	(setf *frame-number-map* "1234567890")
-	(setf *window-number-map* "1234567890") ; This doesn't actually do anything
+(defparameter *default-browser* "google-chrome")
 
-	(run-commands
-	  "gnewbg Browse" ;; F2
-	  "gnewbg IRC"    ;; F3
-	  "gnewbg Pidgin" ;; F4
-	  "gnewbg G5"     ;; F5
-	  "gnewbg G6"     ;; F6
-	  "gnewbg G7"     ;; F7
-	  "gnewbg G8"     ;; F8
-	  "gnewbg G9"     ;; F9
-	  "gnewbg G10"    ;; F10
-	  "gnewbg G11")   ;; F11
+(let ((server-running nil))
+  (defcommand swank () ()
+    "Toggle the swank server on/off"
+    (if server-running
+        (progn
+          (swank:stop-server 4005)
+          (echo-string
+           (current-screen)
+           "Stopping swank.")
+          (setf server-running nil))
+        (progn
+          (swank:create-server :port 4005
+                               :style swank:*communication-style*
+                               :dont-close t)
+          (echo-string
+           (current-screen)
+           "Starting swank. M-x slime-connect RET RET, then (in-packqage stumpwm).")
+          (setf server-running t)))))
 
-	;; Fluxbox-style Alt-F# virtual desktop (group in StumpWM-speak) switching. Modified from:
-	;; http://hcl-club.lu/svn/development/lisp/.stumpwmrc
-	(dotimes (i 13)
-	  (unless (eq i 0) ; F0 is non-existant and will error.
-	    (define-key *top-map* (kbd (format nil "M-F~a" i)) (format nil "gselect ~a" i))))
+(define-key *root-map* (kbd "C-s") "swank")
 
-	(defcommand acpi-status () ()
-	  (stumpwm:echo-string (current-screen)
-	   (with-output-to-string (stream)
-	     (sb-ext:run-program
-	      "/usr/bin/acpitool"
-	      nil
-	   :output stream))))
+;; make frames 1-numbered (i.e. for getting with ALT-FN)
+(setf *frame-number-map* "1234567890")
+' (setf *window-number-map* "1234567890") ; This doesn't actually do anything
 
-	(define-key stumpwm:*root-map* (kbd "B") "run-shell-command conkeror")
-	(define-key *root-map* (kbd "b") "acpi-status")
-	(define-key *root-map* (kbd "RET") "exec urxvtc")
-	(define-key *root-map* (kbd "d") "exec dmenu_run")
-	(define-key *root-map* (kbd "e") "exec emacsclient -c -a \"\"")
+(run-commands
+ "gnewbg Browse" ;; F2
+ "gnewbg IRC"    ;; F3
+ "gnewbg Pidgin" ;; F4
+ "gnewbg G5"     ;; F5
+ "gnewbg G6"     ;; F6
+ "gnewbg G7"     ;; F7
+ "gnewbg G8"     ;; F8
+ "gnewbg G9"     ;; F9
+ "gnewbg G10"    ;; F10
+ "gnewbg G11"    ;; F11
+ "gnewbg G12"
+ "gnewbg G13"
+ "gnewbg G14"
+ "gnewbg G15"
+ "gnewbg G16"
+ "gnewbg G17"
+ "gnewbg G18"
+ "gnewbg G19")
 
-	;; run a battery status bar
-	(run-shell-command "nohup xbattbar -ac left &")
 
-	;; set FFM
-	(setf *mouse-focus-policy* :sloppy)
+;; Fluxbox-style Alt-F# virtual desktop (group in StumpWM-speak) switching. Modified from:
+;; http://hcl-club.lu/svn/development/lisp/.stumpwmrc
+(loop for i from 1 to 9
+   do
+     (progn
+       (format t "Key: ~A~%" i)
+       (define-key *top-map*
+           (kbd (format nil "M-~a" i))
+         (format nil "gselect ~a" i))))
 
-	;; show input bar in centre of screen
-	(setf *input-window-gravity* :center)
+(define-key *top-map* (kbd "M-!") "gselect 10")
+(define-key *top-map* (kbd "M-@") "gselect 11")
+(define-key *top-map* (kbd "M-#") "gselect 12")
+(define-key *top-map* (kbd "M-$") "gselect 13")
+(define-key *top-map* (kbd "M-%") "gselect 14")
+(define-key *top-map* (kbd "M-^") "gselect 15")
+(define-key *top-map* (kbd "M-&") "gselect 16")
+(define-key *top-map* (kbd "M-*") "gselect 17")
+(define-key *top-map* (kbd "M-\(") "gselect 18")
+(define-key *top-map* (kbd "M-\)") "gselect 19")
 
-	;; add ssh keys
-	(run-shell-command "emacs --daemon")
-	(run-shell-command "ssh-add")
-	(run-shell-command "urxvtd -f")
-	;LISP=sbcl
+
+(defvar *scratchpad* nil)
+(defcommand scratch-pad () ()
+  "Create or destroy a new scratchpad group."
+  (if *scratchpad*
+      (progn
+        (gselect *scratchpad*)
+        (dolist (window (group-windows (current-group)))
+          (delete-window window))
+        (gkill)
+        (setf *scratchpad* nil)
+        (echo "nerfed scratchpad"))
+      (progn
+        (setf *scratchpad* (gnew "scratchpad"))
+        (echo "scratchpad created"))))
+
+(defvar *scratchpad-float* nil)
+(defcommand scratch-pad-float () ()
+  "Create or destroy a new floating scratchpad group."
+  (if *scratchpad-float*
+      (progn
+        (gselect *scratchpad-float*)
+        (dolist (window (group-windows (current-group)))
+          (delete-window window))
+        (gkill)
+        (setf *scratchpad-float* nil)
+        (echo "nerfed floating scratchpad"))
+      (progn
+        (setf *scratchpad-float* (gnew "scratchpad-float"))
+        (echo "floating scratchpad created"))))
+
+(defcommand acpi-status () ()
+  "Print ACPI status in the StumpWM message box."
+  (stumpwm:echo-string (current-screen)
+                       (with-output-to-string (stream)
+                         (sb-ext:run-program
+                          "/usr/bin/acpitool"
+                          nil
+                          :output stream))))
+
+(defcommand lock () ()
+  "Lock the screen by invoking xscreensaver."
+  (stumpwm:echo-string (current-screen) "Locking screen...")
+  (sb-ext:run-program "/usr/local/bin/xscreensaver-command"
+		      '("-lock")))
+
+(defun exec-for-status (path &rest args)
+  "Run the path with args and return the status code."
+  (sb-ext:process-exit-code
+   (sb-ext:run-program path args :wait t)))
+
+(defun exec-ok (path &rest args)
+  "Returns true if path with args ran without error."
+  (zerop (exec-for-status path args)))
+
+(defun daemon-is-running (daemon)
+  (zerop (exec-for-status "/usr/bin/pgrep" daemon)))
+
+(defun start-daemon-if-not-running (path &rest args)
+  "If the program specified at path isn't running, start it."
+  (when (not (daemon-is-running (pathname-name path)))
+    (run-shell-command (if (null args)
+                           path
+                           (format nil "~A~{ ~A~}" path args)))))
+
+(defun start-program-if-not-running (program &rest args)
+  (format t "WOULD RUN: nohup ~A~{ ~A~}" program args)
+  (when (not (exec-ok "/usr/bin/pgrep" program))
+    (run-shell-command (format nil "nohup ~A~{ ~A~}"
+                               program args))))
+
+(defun browse-manifest ()
+  (format nil "exec ~A ~A" *default-browser* *manifest-url*))
+(run-shell-command "ssh-add")
+(define-key stumpwm:*root-map* (kbd "B") "run-shell-command conkeror")
+(define-key *root-map* (kbd "b") "acpi-status")
+(define-key *root-map* (kbd "RET") "exec xterm -e zsh -c fish")
+(define-key *root-map* (kbd "d") "exec dmenu_run")
+(define-key *root-map* (kbd "e") "exec emacsclient -c -a \"\"")
+(define-key *root-map* (kbd "E") "exec xterm -e emacsclient -c -nw -a \"\"")
+(define-key *root-map* (kbd "l") "lock")
+(define-key *root-map* (kbd "w") "exec xterm -e wicd-curses")
+(define-key *root-map* (kbd "C-r") "exec xterm -e racket")
+(define-key *root-map* (kbd "g") "exec xterm -e ghci")
+(define-key *root-map* (kbd "C-i") "exec xterm -e ipython")
+(define-key *root-map* (kbd "C-l") "exec SBCL_HOME=/usr/local/lib/sbcl xterm -e rlwrap sbcl --load /home/kyle/.sbcl-repl-util.lisp")
+(define-key *root-map* (kbd "C-d") (browse-manifest))
+(define-key *root-map* (kbd "`") "scratch-pad")
+(define-key *root-map* (kbd "~") "scratch-pad-float")
+(define-key *root-map* (kbd "M") "exec xterm -e htop")
+(define-key *root-map* (kbd "C-v") "exec pavucontrol")
+
+
+;; set FFM
+(setf *mouse-focus-policy* :sloppy)
+
+;; show input bar in centre of screen
+(setf *input-window-gravity* :center)
+
+(message "Ready.")
+
+;; add ssh keys
+;;LISP=sbcl

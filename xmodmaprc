@@ -1,14 +1,21 @@
+!!! This remaps the search key to capslock on a chromebook.
 ! remove Control = Control_L
 ! remove Mod4 = Super_L
 ! remove Mod1 = Alt_L
 ! add Control = Super_L
 ! add Mod4 = Control_L
 ! add Mod1 = Alt_L
+
+!!! Swap caps lock and control, as one does.
 remove Lock = Caps_Lock
 remove Control = Control_L
 keysym Control_L = Caps_Lock
 keysym Caps_Lock = Control_L
 add Lock = Caps_Lock
 add Control = Control_L
+
+!!! On the X60, I kept hitting F1 instead of escape. Instead of learning
+!!! where the key actually was, I just made it do what I thought it
+!!! should do.
 keysym F1 = Escape
 

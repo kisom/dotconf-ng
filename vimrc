@@ -1,5 +1,4 @@
 " General options
-set background=dark
 set backspace=indent,eol,start
 set cindent autoindent
 set cinoptions=t0,+4,(4,u4,w1
@@ -12,17 +11,22 @@ set noexpandtab
 set nohlsearch
 set number
 set ruler
-"set shiftwidth=8
 set showcmd
 set showmatch
 set showmode
-"set softtabstop=8
-"set tabstop=8
 set tags=./tags,tags,/usr/src/sys/arch/amd64/tags,/var/db/libc.tags
 set term=screen-256color
 set ttyfast
 colorscheme eink
-source /usr/local/share/vim/vim74/ftplugin/man.vim
+set background=dark
+source /usr/share/vim/vim74/ftplugin/man.vim
+
+" prep for go
+filetype off
+filetype plugin indent off
+set runtimepath+=/home/kyle/src/go/misc/vim
+filetype plugin indent on
+syntax off
 
 " ^n/^p to switch between tabs
 nnoremap <C-n> :tabnext<Enter>
@@ -143,10 +147,12 @@ autocmd FileType c setlocal noexpandtab
 autocmd FileType cc setlocal noexpandtab
 autocmd FileType python setlocal shiftwidth=4 softtabstop=4
 
+autocmd FileType ada setlocal expandtab shiftwidth=3 softtabstop=3 tabstop=3
+
 " Go language stuff
 autocmd FileType go setlocal noexpandtab
 autocmd FileType go filetype plugin on
 autocmd FileType go filetype indent on
 autocmd FileType go compiler go
-au FileType c au BufWritePost *.[ch] silent !ctags *.[ch] &
-
+au FileType c au BufWritePost *.[ch] silent !/home/kyle/bin/tagger &
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
