@@ -1,5 +1,14 @@
 dotconf2
 
+2015/09/03
+
+Updated every thing. Notably, though, my .emacs.d/ is missing.
+
+    git clone ssh://git@github.com:kisom/emacsd
+    git clone https://github.com/kisom/emacsd
+
+---
+
 2014/03/06
 
 The configuration is being reworked to reflect the new setup of things:
@@ -12,3 +21,4 @@ The configuration is being reworked to reflect the new setup of things:
 
 I've been reworking some of my configuration files, and this is the
 result. Namely, I've switched to ksh(1) as my primary shell.
+
