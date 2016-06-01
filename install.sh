@@ -49,5 +49,5 @@ do
 	[ "1" = "$?" ] || continue
 
 	echo "[+] installing $conf"
-	install -C -D -p -v $conf $instconf
+	install -D -p -v $conf $instconf
 done

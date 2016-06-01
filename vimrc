@@ -32,6 +32,9 @@ syntax off
 nnoremap <C-n> :tabnext<Enter>
 nnoremap <C-p> :tabprevious<Enter>
 
+" StumpWM uses C-t as a leader key.
+nnoremap <C-[> :pop<Enter>
+
 " switch between relative and absolute number
 nn <F2> :setlocal relativenumber! relativenumber?<CR>
 nn <F3> :setlocal number! number?<CR>
@@ -154,5 +157,5 @@ autocmd FileType go setlocal noexpandtab
 autocmd FileType go filetype plugin on
 autocmd FileType go filetype indent on
 autocmd FileType go compiler go
-au FileType c au BufWritePost *.[ch] silent !/home/kyle/bin/tagger &
+au FileType c au BufWritePost *.[ch] silent !ctags -R *.[ch] &
 autocmd FileType go autocmd BufWritePre <buffer> Fmt
